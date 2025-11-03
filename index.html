@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cypress - Problem Reporting</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+    #map { height: 400px; width: 100%; border: 1px solid #ccc; margin-bottom: 20px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; }
+    .error { color: red; display: none; }
+    .success { color: green; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    #imagePreview img { max-width: 200px; max-height: 200px; }
+    .status-pending { color: orange; }
+    .status-in-progress { color: blue; }
+    .status-resolved { color: green; }
+  </style>
+</head>
+<body>
+  <h1>Report a Problem</h1>
+  
+  <div id="map"></div>
+  
+  <div id="boundaryError" class="error">Error: Location must be within Toronto boundaries</div>
+  
+  <form id="reportForm">
+    <div class="form-group">
+      <label for="problemType">Problem Type:</label>
+      <select id="problemType" required>
+        <option value="">Select Problem Type</option>
+        <option value="pothole">Pothole</option>
+        <option value="graffiti">Graffiti</option>
+        <option value="noise">Noise Complaint</option>
+        <option value="damaged_sign">Damaged Sign</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea id="description" required></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label for="imageUpload">Upload Image (Optional):</label>
+      <input type="file" id="imageUpload" accept="image/*">
+      <div id="imagePreview"></div>
+    </div>
+    
+    <div class="form-group">
+      <label>
+        <input type="checkbox" id="notifyMe"> Notify me about updates
+      </label>
+    </div>
+    
+    <button type="submit">Submit Report</button>
+  </form>
+  
+  <div id="duplicateWarning" class="error">Warning: Similar problem already reported nearby</div>
+  <div id="confirmation" class="success"></div>
+  
+  <div id="userReports">
+    <h2>My Reported Problems</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Description</th>
+          <th>Image</th>
+        </tr>
+      </thead>
+      <tbody id="userReportsList"></tbody>
+    </table>
+  </div>
+
+  <div id="allReports">
+    <h2>All Active Reports</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Description</th>
+          <th>Image</th>
+        </tr>
+      </thead>
+      <tbody id="allReportsList"></tbody>
+    </table>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
